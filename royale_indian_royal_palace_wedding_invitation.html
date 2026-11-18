@@ -1,0 +1,2317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Ankita &amp; Kaushik — Royale Wedding Invitation</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts matching Aeccentric Royale Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600;1,700&family=Noto+Serif+Devanagari:wght@500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tone.js for Synthesized Royal Indian Instrumental Soundtrack -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+  <style>
+    :root {
+      --maroon-deep: #43081f;
+      --maroon-door: #4a0a23;
+      --maroon-scroll: #4c0b27;
+      --maroon-btn: #6d1331;
+      --cream-bg: #f6e9d7;
+      --cream-card: #f7e6cf;
+      --gold-text: #f0c482;
+      --gold-border: #d5a458;
+      --rsvp-purple: #7c6992;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: #240410;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      color: var(--maroon-deep);
+      overflow-x: hidden;
+    }
+
+    body.gate-locked {
+      overflow: hidden;
+      height: 100dvh;
+    }
+
+    /* Mobile-first centered container on desktop so proportions match the video 1:1 */
+    .mobile-stage {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      background-color: var(--cream-bg);
+      position: relative;
+      overflow-x: hidden;
+      box-shadow: 0 0 60px rgba(0, 0, 0, 0.75);
+    }
+
+    /* Subtle Cream Damask Wallpaper Pattern (matching 00:01, 00:13, 00:22) */
+    .cream-damask-bg {
+      background-color: var(--cream-bg);
+      background-image:
+        radial-gradient(circle at 25% 25%, rgba(196, 148, 88, 0.11) 2px, transparent 3px),
+        radial-gradient(circle at 75% 75%, rgba(196, 148, 88, 0.11) 2px, transparent 3px),
+        radial-gradient(circle at 50% 50%, rgba(180, 125, 65, 0.08) 0%, transparent 55%);
+      background-size: 48px 48px, 48px 48px, 96px 96px;
+    }
+
+    /* Deep Maroon Damask Pattern (matching Gate Doors & Ceremonies BG) */
+    .maroon-damask-bg {
+      background-color: var(--maroon-door);
+      background-image:
+        radial-gradient(circle at 50% 50%, rgba(213, 164, 88, 0.08) 0%, transparent 55%),
+        repeating-linear-gradient(45deg, rgba(255, 215, 150, 0.025) 0px, rgba(255, 215, 150, 0.025) 2px, transparent 2px, transparent 18px),
+        repeating-linear-gradient(-45deg, rgba(255, 215, 150, 0.025) 0px, rgba(255, 215, 150, 0.025) 2px, transparent 2px, transparent 18px);
+      background-size: 64px 64px, 36px 36px, 36px 36px;
+    }
+
+    .font-sanskrit {
+      font-family: 'Noto Serif Devanagari', serif;
+    }
+
+    .font-ui {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* =====================================================================
+       1. TWO-STAGE GATE OVERLAY (00:00 - 00:05)
+       ===================================================================== */
+    #gate-overlay {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      z-index: 1000;
+      overflow: hidden;
+      pointer-events: auto;
+    }
+
+    #gate-overlay.gate-hidden {
+      pointer-events: none;
+      visibility: hidden;
+    }
+
+    .gate-door {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 50.2%;
+      z-index: 10;
+      transition: transform 1.05s cubic-bezier(0.65, 0, 0.35, 1);
+      will-change: transform;
+    }
+
+    .gate-door-left {
+      left: 0;
+      border-right: 1.5px solid rgba(160, 28, 64, 0.85);
+    }
+
+    .gate-door-right {
+      right: 0;
+      border-left: 1.5px solid rgba(160, 28, 64, 0.85);
+    }
+
+    /* Stage 2: Doors slide apart horizontally */
+    #gate-overlay.doors-sliding .gate-door-left {
+      transform: translateX(-102%);
+    }
+
+    #gate-overlay.doors-sliding .gate-door-right {
+      transform: translateX(102%);
+    }
+
+    /* Center Cream Parchment Band (00:00 - 00:03) */
+    #gate-center-band {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%) scaleY(1);
+      z-index: 20;
+      background-color: #f6e7d4;
+      background-image: radial-gradient(circle at 50% 50%, rgba(190, 140, 75, 0.09) 0%, transparent 65%);
+      border-top: 3px double #c89648;
+      border-bottom: 3px double #c89648;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.65);
+      padding: 28px 24px 30px;
+      text-align: center;
+      transition: opacity 0.36s ease, transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Stage 1: Center band collapses before doors split (00:04) */
+    #gate-overlay.band-collapsing #gate-center-band {
+      opacity: 0;
+      transform: translateY(-50%) scaleY(0.82);
+      pointer-events: none;
+    }
+
+    /* Scalloped Maroon Pill Button ("Tap to open" & "Reveal the Date") */
+    .royal-scallop-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, #791537 0%, #580b25 100%);
+      color: #f9ebd8;
+      border: 1.5px solid #d5a458;
+      border-radius: 999px;
+      padding: 10px 38px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      box-shadow: 0 6px 18px rgba(74, 10, 35, 0.45), inset 0 0 0 2px rgba(213, 164, 88, 0.25);
+      cursor: pointer;
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    .royal-scallop-btn:hover {
+      transform: scale(1.03);
+      filter: brightness(1.08);
+    }
+
+    .royal-scallop-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Ornate side filigree ears on the button */
+    .royal-scallop-btn::before,
+    .royal-scallop-btn::after {
+      content: '❖';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #d5a458;
+      font-size: 0.85rem;
+      line-height: 1;
+    }
+
+    .royal-scallop-btn::before {
+      left: 12px;
+    }
+
+    .royal-scallop-btn::after {
+      right: 12px;
+    }
+
+    /* =====================================================================
+       2. HERO COUPLE NAME REVEAL (00:05 - 00:11)
+       ===================================================================== */
+    .hero-title-wrap {
+      pointer-events: none;
+    }
+
+    .hero-word {
+      display: block;
+      opacity: 0;
+      filter: blur(8px);
+      transform: translate3d(0, 22px, 0) scale(0.96);
+      transition:
+        opacity 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform, filter;
+    }
+
+    .hero-title-wrap.visible .hero-word-1 {
+      opacity: 1;
+      filter: blur(0px);
+      transform: translate3d(0, 0, 0) scale(1);
+      transition-delay: 0.05s;
+    }
+
+    .hero-title-wrap.visible .hero-word-2 {
+      opacity: 1;
+      filter: blur(0px);
+      transform: translate3d(0, 0, 0) scale(1);
+      transition-delay: 0.28s;
+    }
+
+    .hero-title-wrap.visible .hero-word-3 {
+      opacity: 1;
+      filter: blur(0px);
+      transform: translate3d(0, 0, 0) scale(1);
+      transition-delay: 0.52s;
+    }
+
+    /* =====================================================================
+       3. FIXED-HEIGHT ZERO-REFLOW ROYAL SCROLL MECHANIC (00:12 - 00:22)
+       ===================================================================== */
+    .royal-scroll-article {
+      --unroll: 0;
+      --sheet-h: 360px;
+      position: relative;
+      width: 92%;
+      margin: 0 auto;
+      /* Fixed layout height = top roller + full unrolled sheet + bottom roller */
+      min-height: calc(var(--sheet-h) + 72px);
+      padding-top: 34px;
+      padding-bottom: 34px;
+      user-select: none;
+    }
+
+    /* Background Lotus Tree Motif (floral2.webp) sitting behind the scroll sheet!
+       Fully visible below the touching rollers when --unroll = 0, and progressively
+       covered as the maroon parchment sheet & bottom roller move down. */
+    .scroll-backdrop-lotus {
+      position: absolute;
+      left: 50%;
+      top: 52px;
+      transform: translateX(-50%);
+      width: 175px;
+      height: auto;
+      z-index: 1;
+      pointer-events: none;
+      filter: drop-shadow(0 6px 14px rgba(90, 14, 39, 0.12));
+      transition: transform 0.3s ease;
+    }
+
+    /* Assembled Roller Bar (knob-left + roll-top1 + knob-right) */
+    .roller-assembly {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      position: relative;
+      z-index: 6;
+      filter: drop-shadow(0 7px 11px rgba(28, 3, 12, 0.45));
+      user-select: none;
+      will-change: transform;
+    }
+
+    .roller-top-fixed {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+
+    /* Bottom roller starts right beneath the top roller (26px) and translates down
+       by calc(var(--unroll) * var(--sheet-h)) in lockstep with the clip-path edge */
+    .roller-bottom-follower {
+      position: absolute;
+      top: 26px;
+      left: 0;
+      right: 0;
+      transform: translate3d(0, calc(var(--unroll) * var(--sheet-h)), 0);
+    }
+
+    .roller-knob-left {
+      width: 34px;
+      height: 36px;
+      object-fit: contain;
+      flex-shrink: 0;
+      margin-right: -3px;
+    }
+
+    .roller-bar-center {
+      height: 28px;
+      width: calc(100% - 62px);
+      object-fit: fill;
+      flex-shrink: 0;
+    }
+
+    .roller-knob-right {
+      width: 34px;
+      height: 36px;
+      object-fit: contain;
+      flex-shrink: 0;
+      margin-left: -3px;
+    }
+
+    /* Fixed-size Maroon Parchment Sheet clipped from bottom up via GPU clip-path */
+    .scroll-sheet-layer {
+      position: relative;
+      width: calc(100% - 54px);
+      margin: -6px auto 0;
+      background-color: #55092A;
+      background-image:
+        radial-gradient(circle at 50% 35%, rgba(240, 196, 130, 0.1) 0%, transparent 70%),
+        repeating-linear-gradient(90deg, rgba(213, 164, 88, 0.04) 0px, rgba(213, 164, 88, 0.04) 1px, transparent 1px, transparent 14px);
+      z-index: 3;
+      box-shadow: 0 16px 34px rgba(32, 3, 13, 0.48);
+      /* Unrolls downward without reflowing text inside */
+      clip-path: inset(0 0 calc((1 - var(--unroll)) * 100%) 0);
+      -webkit-clip-path: inset(0 0 calc((1 - var(--unroll)) * 100%) 0);
+      will-change: clip-path;
+    }
+
+    /* Ornate Golden Beaded Side Borders & Inner Frame of the Maroon Scroll */
+    .scroll-inner-frame {
+      margin: 0 10px;
+      padding: 30px 18px 28px;
+      border-left: 2px solid rgba(226, 180, 108, 0.78);
+      border-right: 2px solid rgba(226, 180, 108, 0.78);
+      outline: 2px dotted rgba(226, 180, 108, 0.58);
+      outline-offset: -6px;
+      position: relative;
+      text-align: center;
+      color: #f6e3c4;
+    }
+
+    /* Subtle line-by-line text clarity transition as the scroll passes over each line */
+    .scroll-inner-frame > * {
+      transition: transform 0.35s ease, opacity 0.35s ease;
+    }
+
+    /* =====================================================================
+       SCROLL-DRIVEN SECTION & ELEMENT REVEAL CLASSES
+       ===================================================================== */
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translate3d(0, 34px, 0) scale(0.97);
+      transition:
+        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal-on-scroll.is-revealed {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translate3d(-32px, 12px, 0);
+      transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translate3d(32px, 12px, 0);
+      transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .reveal-left.is-revealed,
+    .reveal-right.is-revealed {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+
+    /* Repeat diamond pattern divider (00:21, 00:27) */
+    .diamond-border-strip {
+      height: 20px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-top: 1px solid rgba(190, 136, 66, 0.45);
+      border-bottom: 1px solid rgba(190, 136, 66, 0.45);
+      background-color: rgba(242, 224, 198, 0.6);
+      overflow: hidden;
+      color: #c68b59;
+      font-size: 11px;
+      letter-spacing: 10px;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    /* =====================================================================
+       4. DATE PLAQUES & SLOT MACHINE REELS (00:22 - 00:27)
+       ===================================================================== */
+    .date-plaque-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .date-plaque-box {
+      width: 86px;
+      height: 64px;
+      box-sizing: content-box;
+      background: linear-gradient(180deg, #5d0d28 0%, #44071c 100%);
+      border: 2px solid #d5a458;
+      border-radius: 16px;
+      box-shadow: 0 6px 16px rgba(68, 7, 28, 0.35), inset 0 0 0 2px rgba(213, 164, 88, 0.2);
+      overflow: hidden;
+      position: relative;
+      display: block;
+    }
+
+    .plaque-reel {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      transform: translate3d(0, 0, 0);
+      transition: transform 2.1s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+
+    #slot-reel-month {
+      transition-duration: 2.45s;
+    }
+
+    #slot-reel-year {
+      transition-duration: 2.75s;
+    }
+
+    .plaque-cell {
+      height: 64px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 1.6rem;
+      line-height: 1;
+      color: #f5c98b;
+      flex-shrink: 0;
+      letter-spacing: 0.03em;
+    }
+
+    /* =====================================================================
+       5. HANGING PICTURE FRAME ROD & SWINGING FRAMES (00:29 - 00:42)
+       ===================================================================== */
+    .hanging-rod-bar {
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(180deg, #8b1c41 0%, #4e0820 60%, #2d0311 100%);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+      position: relative;
+      z-index: 10;
+    }
+
+    .frames-carousel {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      padding: 0 11% 24px;
+      gap: 28px;
+    }
+
+    .frames-carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .hanging-frame-slide {
+      flex: 0 0 100%;
+      scroll-snap-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform-origin: top center;
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+
+    /* 3D Maroon Beveled Picture Frame (00:30 - 00:42) */
+    .maroon-3d-frame {
+      width: 100%;
+      max-width: 315px;
+      background: linear-gradient(135deg, #7c1639 0%, #520922 50%, #3a0517 100%);
+      padding: 16px;
+      border-radius: 3px;
+      box-shadow:
+        0 20px 35px rgba(55, 8, 24, 0.42),
+        inset 2px 2px 3px rgba(255, 190, 200, 0.25),
+        inset -3px -3px 6px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    /* Inner cream mat board */
+    .frame-mat-board {
+      background-color: #f6e7d2;
+      border: 2px solid #c99852;
+      padding: 16px 16px 22px;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.18);
+    }
+
+    /* Inner tan canvas ("Your photo here") */
+    .frame-photo-well {
+      aspect-ratio: 4 / 4.3;
+      width: 100%;
+      background-color: #e3ceb5;
+      border: 1.5px solid #d5be9e;
+      box-shadow: inset 0 3px 10px rgba(90, 55, 25, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    /* =====================================================================
+       6. CEREMONIES MUGHAL CUSPED ARCH CARDS (00:43 - 00:57)
+       ===================================================================== */
+    .mughal-arch-card {
+      width: 90%;
+      max-width: 370px;
+      margin: 0 auto;
+      position: relative;
+      filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.55));
+    }
+
+    /* =====================================================================
+       7. RSVP RADIO PILLS (01:08 - 01:13)
+       ===================================================================== */
+    .rsvp-choice-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 10px;
+      border: 1px solid #dfd8e8;
+      border-radius: 10px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.85rem;
+      color: #3d3347;
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      user-select: none;
+    }
+
+    .rsvp-choice-label:has(input:checked) {
+      border-color: #7c6992;
+      background-color: #f4effa;
+      font-weight: 600;
+      color: #4d3b63;
+    }
+
+    .rsvp-choice-label input[type="radio"] {
+      accent-color: #7c6992;
+      width: 15px;
+      height: 15px;
+    }
+
+    /* Live Edit Mode Outline Highlight */
+    body.live-edit-mode [contenteditable="true"] {
+      outline: 1.5px dashed rgba(213, 164, 88, 0.85);
+      outline-offset: 3px;
+      border-radius: 4px;
+      cursor: text;
+    }
+
+    /* Hide preview chrome when user toggles the eye icon */
+    body.chrome-hidden .preview-chrome-bar {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body class="gate-locked">
+
+  <!-- =====================================================================
+       FLOATING PREVIEW CHROME & SPEAKER CONTROLS (Frames 00:00 - 01:13)
+       ===================================================================== -->
+  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-[480px] z-[1150] pointer-events-none px-3.5 pt-3">
+    <!-- Top Chrome Row: ← Back + Eye Icon (Left) | ✎ Try editing (Right) -->
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2 pointer-events-auto">
+        <button
+          type="button"
+          id="chrome-back-btn"
+          class="preview-chrome-bar font-ui text-xs font-semibold text-[#3f2652] bg-[#efe5f7]/95 backdrop-blur-md px-3.5 py-2 rounded-full shadow-md flex items-center gap-1.5 hover:scale-105 active:scale-95 transition"
+          title="Replay Gate Opening Animation"
+        >
+          <span>←</span>
+          <span>Back</span>
+        </button>
+
+        <button
+          type="button"
+          id="chrome-eye-btn"
+          aria-label="Toggle Preview Chrome"
+          title="Hide/Show Preview Buttons"
+          class="w-8 h-8 rounded-full bg-[#3a0b22]/55 backdrop-blur-md text-[#e7d3f8] flex items-center justify-center shadow hover:scale-105 active:scale-95 transition"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </button>
+      </div>
+
+      <button
+        type="button"
+        id="try-editing-btn"
+        class="preview-chrome-bar pointer-events-auto font-ui text-xs font-semibold text-[#3f2652] bg-[#efe5f7]/95 backdrop-blur-md px-3.5 py-2 rounded-full shadow-md flex items-center gap-1.5 hover:scale-105 active:scale-95 transition"
+      >
+        <span>✎</span>
+        <span id="try-editing-label">Try editing</span>
+      </button>
+    </div>
+
+    <!-- Floating Circular White Speaker Button (Right below Try Editing, matching video) -->
+    <div class="flex justify-end mt-3">
+      <button
+        id="floating-speaker-btn"
+        type="button"
+        aria-label="Toggle wedding music"
+        class="pointer-events-auto w-11 h-11 rounded-full bg-white/95 shadow-[0_4px_16px_rgba(0,0,0,0.28)] flex items-center justify-center text-[#2d2427] hover:scale-105 active:scale-95 transition"
+      >
+        <!-- Speaker On Icon -->
+        <svg id="speaker-on-svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+        </svg>
+        <!-- Speaker Muted Icon -->
+        <svg id="speaker-off-svg" class="w-5 h-5 hidden text-rose-700" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Bottom-Right Floating Purple Pill CTA ("Buy this template" / Customize) -->
+  <div class="preview-chrome-bar fixed bottom-5 left-1/2 -translate-x-1/2 w-full max-w-[480px] z-[1150] pointer-events-none px-4 flex justify-end transition-opacity duration-300">
+    <button
+      type="button"
+      id="buy-template-btn"
+      class="pointer-events-auto font-ui text-sm font-semibold text-white bg-gradient-to-r from-[#7928ca] to-[#6d28d9] px-5 py-3 rounded-full shadow-[0_8px_24px_rgba(109,40,217,0.45)] hover:scale-105 active:scale-95 transition"
+    >
+      Buy this template
+    </button>
+  </div>
+
+
+  <!-- =====================================================================
+       SECTION 0: INITIAL SPLIT MAROON GATE OVERLAY (00:00 - 00:04)
+       ===================================================================== -->
+  <div id="gate-overlay" role="button" tabindex="0" aria-label="Tap to open wedding invitation">
+
+    <!-- LEFT MAROON DOOR (Carries top-left floral & bottom-left elephant) -->
+    <div class="gate-door gate-door-left maroon-damask-bg flex flex-col justify-between items-center py-6">
+      <img
+        src="https://www.itsbalcony.com/templates/royale/media/floral1.png"
+        alt=""
+        class="w-36 sm:w-40 h-auto object-contain mt-2 select-none"
+      />
+      <img
+        src="https://www.itsbalcony.com/templates/royale/media/elephant.png"
+        alt=""
+        class="w-36 sm:w-40 h-auto object-contain mb-4 select-none"
+      />
+    </div>
+
+    <!-- RIGHT MAROON DOOR (Carries top-right floral & bottom-right mirrored elephant) -->
+    <div class="gate-door gate-door-right maroon-damask-bg flex flex-col justify-between items-center py-6">
+      <img
+        src="https://www.itsbalcony.com/templates/royale/media/floral1.png"
+        alt=""
+        class="w-36 sm:w-40 h-auto object-contain mt-2 -scale-x-100 select-none"
+      />
+      <img
+        src="https://www.itsbalcony.com/templates/royale/media/elephant.png"
+        alt=""
+        class="w-36 sm:w-40 h-auto object-contain mb-4 -scale-x-100 select-none"
+      />
+    </div>
+
+    <!-- CENTER HORIZONTAL CREAM PARCHMENT BAND -->
+    <div id="gate-center-band">
+      <!-- Ganesha Line Art -->
+      <div class="flex justify-center mb-3">
+        <img
+          src="https://www.itsbalcony.com/templates/symbols/_ganesha.svg"
+          alt="Lord Ganesha"
+          class="w-16 h-20 object-contain"
+        />
+      </div>
+
+      <!-- Sanskrit Invocation -->
+      <p class="font-sanskrit text-[#6d1331] text-xl font-semibold tracking-wide mb-4">
+        श्री गणेशाय नमः
+      </p>
+
+      <!-- Invitation Preamble -->
+      <p class="text-[#5e112b] text-[1.15rem] leading-relaxed max-w-[280px] mx-auto mb-6 font-medium">
+        we cordially invite you to<br />
+        grace the auspicious<br />
+        occasion of the marriage<br />
+        of…
+      </p>
+
+      <!-- Scalloped Maroon Button: Tap to open -->
+      <button type="button" id="tap-to-open-btn" class="royal-scallop-btn">
+        Tap to open
+      </button>
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================================
+       MAIN SCROLLABLE INVITATION STAGE
+       ===================================================================== -->
+  <main class="mobile-stage">
+
+    <!-- ===================================================================
+         SECTION 1: HERO PALACE MANDAP AT DUSK (00:05 - 00:12)
+         =================================================================== -->
+    <section aria-label="The couple" class="relative w-full overflow-hidden">
+      <!-- Background Royal Mandap Image + Shimmering Water Reflections Canvas -->
+      <div class="relative w-full aspect-[9/16] max-h-[920px]">
+        <picture>
+          <source media="(min-width: 700px)" srcset="https://www.itsbalcony.com/templates/royale/media/mandap_dusk.webp" />
+          <img
+            src="https://www.itsbalcony.com/templates/royale/media/garden_palace_poster.webp"
+            alt="Royal Wedding Mandap with Reflection Pool"
+            class="w-full h-full object-cover object-top block"
+          />
+        </picture>
+
+        <!-- Subtle Animated Floating Diya Reflections on the Water Pool -->
+        <canvas id="water-shimmer-canvas" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
+
+        <!-- Stacked Couple Title ("Ankita & Kaushik") in the Peach Sky (00:05.5 - 00:11) -->
+        <div
+          id="hero-couple-title"
+          class="hero-title-wrap absolute top-[7%] left-0 right-0 text-center px-4"
+        >
+          <h1 class="italic font-normal text-[#3b0d20] leading-[1.08] tracking-normal select-none" data-editable="true">
+            <span class="hero-word hero-word-1 text-[3.35rem] sm:text-[3.7rem]">Ankita</span>
+            <span class="hero-word hero-word-2 text-[2.2rem] sm:text-[2.45rem] my-0.5">&amp;</span>
+            <span class="hero-word hero-word-3 text-[3.35rem] sm:text-[3.7rem]">Kaushik</span>
+          </h1>
+        </div>
+
+        <!-- Bottom Torn Cream Paper Divider -->
+        <img
+          src="https://www.itsbalcony.com/templates/royale/media/section_divider.svg"
+          alt=""
+          class="absolute -bottom-1 left-0 w-full h-auto object-cover pointer-events-none z-10"
+        />
+      </div>
+    </section>
+
+
+    <!-- ===================================================================
+         SECTION 2: FAMILY LINEAGE UNROLLING ROYAL SCROLLS (00:12 - 00:22)
+         =================================================================== -->
+    <section aria-label="The families" class="cream-damask-bg pt-6 pb-10 relative">
+
+      <!-- SCROLL 1: GROOM (Chi. Kaushik Sharma) -->
+      <article class="royal-scroll-article mb-12 js-unroll-scroll">
+        <!-- Full Lotus Tree Motif sitting behind the scroll sheet -->
+        <img
+          src="https://www.itsbalcony.com/templates/royale/media/floral2.webp"
+          alt=""
+          class="scroll-backdrop-lotus"
+        />
+
+        <!-- Fixed Top Roller Bar Assembly -->
+        <div class="roller-assembly roller-top-fixed">
+          <img src="https://www.itsbalcony.com/templates/royale/media/knob-left%201.svg" alt="" class="roller-knob-left" />
+          <img src="https://www.itsbalcony.com/templates/royale/media/roll-top1.svg" alt="" class="roller-bar-center" />
+          <img src="https://www.itsbalcony.com/templates/royale/media/knob%203.svg" alt="" class="roller-knob-right" />
+        </div>
+
+        <!-- Fixed-Height Maroon Parchment Sheet Revealed via GPU clip-path -->
+        <div class="scroll-sheet-layer">
+          <div class="scroll-inner-frame">
+            <h2 class="text-[1.85rem] sm:text-[2rem] font-semibold text-[#f3c786] leading-snug mb-5">
+              Chi. Kaushik Sharma
+            </h2>
+
+            <p class="text-[1.05rem] text-[#f3c786]/90 mb-1">Son of</p>
+            <p class="text-[1.28rem] font-semibold text-[#fae6c8] leading-snug">
+              Shri Ramesh Chandra<br />
+              Sharma<br />
+              &amp;<br />
+              Smt. Sunita Sharma
+            </p>
+
+            <p class="text-[1.05rem] text-[#f3c786]/90 mt-5 mb-1">Grandson of</p>
+            <p class="text-[1.22rem] font-semibold text-[#fae6c8] leading-snug mb-6">
+              Late Shri Pandit Brij Mohan<br />
+              Sharma<br />
+              &amp;<br />
+              Late Smt. Kamla Devi Sharma
+            </p>
+
+            <!-- Inner Lotus Scroll Divider -->
+            <div class="flex justify-center mt-2">
+              <img
+                src="https://www.itsbalcony.com/templates/royale/media/divider.webp"
+                alt=""
+                class="w-56 h-auto object-contain"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Roller Bar Assembly that translates downward with --unroll -->
+        <div class="roller-assembly roller-bottom-follower">
+          <img src="https://www.itsbalcony.com/templates/royale/media/knob-left%201.svg" alt="" class="roller-knob-left" />
+          <img src="https://www.itsbalcony.com/templates/royale/media/roll-top1.svg" alt="" class="roller-bar-center" />
+          <img src="https://www.itsbalcony.com/templates/royale/media/knob%203.svg" alt="" class="roller-knob-right" />
+        </div>
+      </article>
+
+
+      <!-- SCROLL 2: BRIDE (Kum. Ankita Verma) -->
+      <article class="royal-scroll-article js-unroll-scroll">
+        <!-- Full Lotus Tree Motif behind the scroll -->
+        <img
+          src="https://www.itsbalcony.com/templates/royale/media/floral2.webp"
+          alt=""
+          class="scroll-backdrop-lotus"
+        />
+
+        <!-- Fixed Top Roller Bar Assembly -->
+        <div class="roller-assembly roller-top-fixed">
+          <img src="https://www.itsbalcony.com/templates/royale/media/knob-left%201.svg" alt="" class="roller-knob-left" />
+          <img src="https://www.itsbalcony.com/templates/royale/media/roll-top1.svg" alt="" class="roller-bar-center" />
+          <img src="https://www.itsbalcony.com/templates/royale/media/knob%203.svg" alt="" class="roller-knob-right" />
+        </div>
+
+        <!-- Fixed-Height Maroon Parchment Sheet Revealed via GPU clip-path -->
+        <div class="scroll-sheet-layer">
+          <div class="scroll-inner-frame">
+            <h2 class="text-[1.85rem] sm:text-[2rem] font-semibold text-[#f3c786] leading-snug mb-5">
+              Kum. Ankita Verma
+            </h2>
+
+            <p class="text-[1.05rem] text-[#f3c786]/90 mb-1">Daughter of</p>
+            <p class="text-[1.28rem] font-semibold text-[#fae6c8] leading-snug">
+              Shri Rajesh Kumar Verma<br />
+              &amp;<br />
+              Smt. Meera Verma
+            </p>
+
+            <p class="text-[1.05rem] text-[#f3c786]/90 mt-5 mb-1">Granddaughter of</p>
+            <p class="text-[1.22rem] font-semibold text-[#fae6c8] leading-snug mb-6">
+              Late Shri Hari Prasad Verma<br />
+              &amp;<br />
+              Late Smt. Shanti Devi Verma
+            </p>
+
+            <!-- Inner Lotus Scroll Divider -->
+            <div class="flex justify-center mt-2">
+              <img
+                src="https://www.itsbalcony.com/templates/royale/media/divider.webp"
+                alt=""
+                class="w-56 h-auto object-contain"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Roller Bar Assembly that translates downward with --unroll -->
+        <div class="roller-assembly roller-bottom-follower">
+          <img src="https://www.itsbalcony.com/templates/royale/media/knob-left%201.svg" alt="" class="roller-knob-left" />
+          <img src="https://www.itsbalcony.com/templates/royale/media/roll-top1.svg" alt="" class="roller-bar-center" />
+          <img src="https://www.itsbalcony.com/templates/royale/media/knob%203.svg" alt="" class="roller-knob-right" />
+        </div>
+      </article>
+
+    </section>
+
+
+    <!-- ===================================================================
+         SECTION 3: INTERACTIVE "REVEAL THE DATE" & ROYAL PAVILION (00:22 - 00:29)
+         =================================================================== -->
+    <section aria-label="The date" class="cream-damask-bg relative">
+
+      <!-- Top Repeating Diamond Floral Border Line (00:22) -->
+      <div class="diamond-border-strip">
+        ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖
+      </div>
+
+      <div class="py-8 px-2 relative overflow-hidden">
+        <!-- Top Red/Gold Lotus Bunch -->
+        <div class="flex justify-center mb-3 reveal-on-scroll">
+          <img
+            src="https://www.itsbalcony.com/templates/royale/media/lotus_bunch.png"
+            alt=""
+            class="w-36 h-auto object-contain"
+          />
+        </div>
+
+        <!-- 3 Maroon Date Plaques Flanked by Royal Elephants -->
+        <div class="relative flex items-center justify-center my-2">
+          <!-- Left Elephant -->
+          <img
+            src="https://www.itsbalcony.com/templates/royale/media/elephant.png"
+            alt=""
+            class="w-24 sm:w-28 h-auto object-contain -ml-6 mr-1 shrink-0 select-none reveal-left"
+          />
+
+          <!-- Center 3 Plaques (DATE | MONTH | YEAR) -->
+          <div class="flex items-center justify-center gap-2 sm:gap-2.5 z-10 reveal-on-scroll">
+            <!-- DATE Plaque -->
+            <div class="date-plaque-wrapper">
+              <span class="text-[11px] font-bold tracking-[0.14em] text-[#5a142a] uppercase mb-1">DATE</span>
+              <div class="date-plaque-box">
+                <div id="slot-reel-date" class="plaque-reel">
+                  <div class="plaque-cell">&nbsp;</div>
+                  <div class="plaque-cell">13</div>
+                  <div class="plaque-cell">26</div>
+                  <div class="plaque-cell">18</div>
+                  <div class="plaque-cell">03</div>
+                  <div class="plaque-cell">03</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- MONTH Plaque -->
+            <div class="date-plaque-wrapper">
+              <span class="text-[11px] font-bold tracking-[0.14em] text-[#5a142a] uppercase mb-1">MONTH</span>
+              <div class="date-plaque-box">
+                <div id="slot-reel-month" class="plaque-reel">
+                  <div class="plaque-cell">&nbsp;</div>
+                  <div class="plaque-cell">SEP</div>
+                  <div class="plaque-cell">MAY</div>
+                  <div class="plaque-cell">AUG</div>
+                  <div class="plaque-cell">NOV</div>
+                  <div class="plaque-cell">DEC</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- YEAR Plaque -->
+            <div class="date-plaque-wrapper">
+              <span class="text-[11px] font-bold tracking-[0.14em] text-[#5a142a] uppercase mb-1">YEAR</span>
+              <div class="date-plaque-box">
+                <div id="slot-reel-year" class="plaque-reel">
+                  <div class="plaque-cell">&nbsp;</div>
+                  <div class="plaque-cell">2024</div>
+                  <div class="plaque-cell">2024</div>
+                  <div class="plaque-cell">2025</div>
+                  <div class="plaque-cell">2025</div>
+                  <div class="plaque-cell">2026</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Elephant (Mirrored) -->
+          <img
+            src="https://www.itsbalcony.com/templates/royale/media/elephant.png"
+            alt=""
+            class="w-24 sm:w-28 h-auto object-contain -mr-6 ml-1 -scale-x-100 shrink-0 select-none reveal-right"
+          />
+        </div>
+
+        <!-- "Reveal the Date" Button -> Morphs into "Save the Date" (00:23 -> 00:28) -->
+        <div class="text-center mt-5 min-h-[52px] flex items-center justify-center reveal-on-scroll">
+          <button
+            id="reveal-date-btn"
+            type="button"
+            class="royal-scallop-btn text-[1.15rem] py-2 px-9"
+          >
+            Reveal the Date
+          </button>
+
+          <button
+            id="save-date-link"
+            type="button"
+            onclick="downloadWeddingICS()"
+            class="hidden italic text-[1.45rem] text-[#5e112b] hover:underline font-medium tracking-wide transition-opacity duration-500 bg-transparent border-0 cursor-pointer"
+          >
+            Save the Date
+          </button>
+        </div>
+      </div>
+
+      <!-- Bottom Repeating Diamond Floral Border Line (00:26) -->
+      <div class="diamond-border-strip">
+        ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖ ❖
+      </div>
+
+      <!-- Royal Fountain Pavilion Illustration & Wide Lotus Garland -->
+      <div class="pt-6 pb-8 px-4 text-center reveal-on-scroll">
+        <img
+          src="https://www.itsbalcony.com/templates/royale/media/pavilion.webp"
+          alt="Royal Garden Fountain Pavilion"
+          class="w-full max-w-[420px] mx-auto h-auto object-contain mb-4"
+        />
+        <img
+          src="https://www.itsbalcony.com/templates/royale/media/divider3.png"
+          alt=""
+          class="w-full max-w-[390px] mx-auto h-auto object-contain"
+        />
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================================
+         SECTION 4: HANGING PICTURE FRAMES ON MAROON ROD (00:29 - 00:42)
+         =================================================================== -->
+    <section aria-label="Our story in pictures" class="cream-damask-bg pt-2 pb-12 relative overflow-hidden reveal-on-scroll">
+
+      <!-- Horizontal Maroon Velvet/Wood Rod across full width -->
+      <div class="hanging-rod-bar"></div>
+
+      <!-- Horizontally Swipeable Hanging Frames Track with Pendulum Swing Physics -->
+      <div id="hanging-frames-track" class="frames-carousel">
+
+        <!-- FRAME 1: #howitstarted -->
+        <div class="hanging-frame-slide">
+          <!-- Gold Ring + Diagonal Beaded Strings SVG -->
+          <svg class="w-44 h-16 -mt-1 shrink-0 overflow-visible" viewBox="0 0 180 65">
+            <circle cx="90" cy="4" r="6" fill="none" stroke="#c89648" stroke-width="2.5" />
+            <line x1="90" y1="8" x2="18" y2="65" stroke="#7a1636" stroke-width="3" stroke-dasharray="2 4" stroke-linecap="round" />
+            <line x1="90" y1="8" x2="162" y2="65" stroke="#7a1636" stroke-width="3" stroke-dasharray="2 4" stroke-linecap="round" />
+          </svg>
+          <!-- 3D Maroon Picture Frame -->
+          <div class="maroon-3d-frame">
+            <div class="frame-mat-board">
+              <div class="frame-photo-well" onclick="triggerFramePhotoUpload(0)">
+                <img id="frame-uploaded-0" src="" alt="" class="hidden w-full h-full object-cover" />
+                <span id="frame-placeholder-0" class="italic text-[#9c785c] text-[1.25rem]">Your photo here</span>
+              </div>
+              <p class="italic text-[#5e112b] text-[1.5rem] text-center mt-4 mb-0 leading-none">
+                #howitstarted
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- FRAME 2: #adventures -->
+        <div class="hanging-frame-slide">
+          <svg class="w-44 h-16 -mt-1 shrink-0 overflow-visible" viewBox="0 0 180 65">
+            <circle cx="90" cy="4" r="6" fill="none" stroke="#c89648" stroke-width="2.5" />
+            <line x1="90" y1="8" x2="18" y2="65" stroke="#7a1636" stroke-width="3" stroke-dasharray="2 4" stroke-linecap="round" />
+            <line x1="90" y1="8" x2="162" y2="65" stroke="#7a1636" stroke-width="3" stroke-dasharray="2 4" stroke-linecap="round" />
+          </svg>
+          <div class="maroon-3d-frame">
+            <div class="frame-mat-board">
+              <div class="frame-photo-well" onclick="triggerFramePhotoUpload(1)">
+                <img id="frame-uploaded-1" src="" alt="" class="hidden w-full h-full object-cover" />
+                <span id="frame-placeholder-1" class="italic text-[#9c785c] text-[1.25rem]">Your photo here</span>
+              </div>
+              <p class="italic text-[#5e112b] text-[1.5rem] text-center mt-4 mb-0 leading-none">
+                #adventures
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- FRAME 3: Quote Card 1 -->
+        <div class="hanging-frame-slide">
+          <svg class="w-44 h-16 -mt-1 shrink-0 overflow-visible" viewBox="0 0 180 65">
+            <circle cx="90" cy="4" r="6" fill="none" stroke="#c89648" stroke-width="2.5" />
+            <line x1="90" y1="8" x2="18" y2="65" stroke="#7a1636" stroke-width="3" stroke-dasharray="2 4" stroke-linecap="round" />
+            <line x1="90" y1="8" x2="162" y2="65" stroke="#7a1636" stroke-width="3" stroke-dasharray="2 4" stroke-linecap="round" />
+          </svg>
+          <div class="maroon-3d-frame">
+            <div class="frame-mat-board py-12 px-6 flex items-center justify-center min-h-[340px]">
+              <p class="italic text-[#5e112b] text-[1.45rem] text-center leading-relaxed">
+                “Some stories begin with grand gestures. Ours started with a simple conversation.”
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- FRAME 4: #thelittlethings -->
+        <div class="hanging-frame-slide">
+          <svg class="w-44 h-16 -mt-1 shrink-0 overflow-visible" viewBox="0 0 180 65">
+            <circle cx="90" cy="4" r="6" fill="none" stroke="#c89648" stroke-width="2.5" />
+            <line x1="90" y1="8" x2="18" y2="65" stroke="#7a1636" stroke-width="3" stroke-dasharray="2 4" stroke-linecap="round" />
+            <line x1="90" y1="8" x2="162" y2="65" stroke="#7a1636" stroke-width="3" stroke-dasharray="2 4" stroke-linecap="round" />
+          </svg>
+          <div class="maroon-3d-frame">
+            <div class="frame-mat-board">
+              <div class="frame-photo-well" onclick="triggerFramePhotoUpload(2)">
+                <img id="frame-uploaded-2" src="" alt="" class="hidden w-full h-full object-cover" />
+                <span id="frame-placeholder-2" class="italic text-[#9c785c] text-[1.25rem]">Your photo here</span>
+              </div>
+              <p class="italic text-[#5e112b] text-[1.5rem] text-center mt-4 mb-0 leading-none">
+                #thelittlethings
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- FRAME 5: #everyday -->
+        <div class="hanging-frame-slide">
+          <svg class="w-44 h-16 -mt-1 shrink-0 overflow-visible" viewBox="0 0 180 65">
+            <circle cx="90" cy="4" r="6" fill="none" stroke="#c89648" stroke-width="2.5" />
+            <line x1="90" y1="8" x2="18" y2="65" stroke="#7a1636" stroke-width="3" stroke-dasharray="2 4" stroke-linecap="round" />
+            <line x1="90" y1="8" x2="162" y2="65" stroke="#7a1636" stroke-width="3" stroke-dasharray="2 4" stroke-linecap="round" />
+          </svg>
+          <div class="maroon-3d-frame">
+            <div class="frame-mat-board">
+              <div class="frame-photo-well" onclick="triggerFramePhotoUpload(3)">
+                <img id="frame-uploaded-3" src="" alt="" class="hidden w-full h-full object-cover" />
+                <span id="frame-placeholder-3" class="italic text-[#9c785c] text-[1.25rem]">Your photo here</span>
+              </div>
+              <p class="italic text-[#5e112b] text-[1.5rem] text-center mt-4 mb-0 leading-none">
+                #everyday
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- FRAME 6: Quote Card 2 -->
+        <div class="hanging-frame-slide">
+          <svg class="w-44 h-16 -mt-1 shrink-0 overflow-visible" viewBox="0 0 180 65">
+            <circle cx="90" cy="4" r="6" fill="none" stroke="#c89648" stroke-width="2.5" />
+            <line x1="90" y1="8" x2="18" y2="65" stroke="#7a1636" stroke-width="3" stroke-dasharray="2 4" stroke-linecap="round" />
+            <line x1="90" y1="8" x2="162" y2="65" stroke="#7a1636" stroke-width="3" stroke-dasharray="2 4" stroke-linecap="round" />
+          </svg>
+          <div class="maroon-3d-frame">
+            <div class="frame-mat-board py-12 px-6 flex items-center justify-center min-h-[340px]">
+              <p class="italic text-[#5e112b] text-[1.4rem] text-center leading-relaxed">
+                “Friendship grew into something more, and we realized life's best moments were the ones we shared together.”
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- FRAME 7: #foreverbegins -->
+        <div class="hanging-frame-slide">
+          <svg class="w-44 h-16 -mt-1 shrink-0 overflow-visible" viewBox="0 0 180 65">
+            <circle cx="90" cy="4" r="6" fill="none" stroke="#c89648" stroke-width="2.5" />
+            <line x1="90" y1="8" x2="18" y2="65" stroke="#7a1636" stroke-width="3" stroke-dasharray="2 4" stroke-linecap="round" />
+            <line x1="90" y1="8" x2="162" y2="65" stroke="#7a1636" stroke-width="3" stroke-dasharray="2 4" stroke-linecap="round" />
+          </svg>
+          <div class="maroon-3d-frame">
+            <div class="frame-mat-board">
+              <div class="frame-photo-well" onclick="triggerFramePhotoUpload(4)">
+                <img id="frame-uploaded-4" src="" alt="" class="hidden w-full h-full object-cover" />
+                <span id="frame-placeholder-4" class="italic text-[#9c785c] text-[1.25rem]">Your photo here</span>
+              </div>
+              <p class="italic text-[#5e112b] text-[1.5rem] text-center mt-4 mb-0 leading-none">
+                #foreverbegins
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- FRAME 8: #usforever -->
+        <div class="hanging-frame-slide">
+          <svg class="w-44 h-16 -mt-1 shrink-0 overflow-visible" viewBox="0 0 180 65">
+            <circle cx="90" cy="4" r="6" fill="none" stroke="#c89648" stroke-width="2.5" />
+            <line x1="90" y1="8" x2="18" y2="65" stroke="#7a1636" stroke-width="3" stroke-dasharray="2 4" stroke-linecap="round" />
+            <line x1="90" y1="8" x2="162" y2="65" stroke="#7a1636" stroke-width="3" stroke-dasharray="2 4" stroke-linecap="round" />
+          </svg>
+          <div class="maroon-3d-frame">
+            <div class="frame-mat-board">
+              <div class="frame-photo-well" onclick="triggerFramePhotoUpload(5)">
+                <img id="frame-uploaded-5" src="" alt="" class="hidden w-full h-full object-cover" />
+                <span id="frame-placeholder-5" class="italic text-[#9c785c] text-[1.25rem]">Your photo here</span>
+              </div>
+              <p class="italic text-[#5e112b] text-[1.5rem] text-center mt-4 mb-0 leading-none">
+                #usforever
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Hidden File Input so user can tap any frame to test uploading a photo -->
+      <input type="file" id="hidden-frame-file-input" accept="image/*" class="hidden" />
+
+      <!-- <<<   >>> Navigation Arrows Below Frame (Exact match to 00:32) -->
+      <div class="flex items-center justify-center gap-6 mt-2 text-[#6d1331] font-semibold text-lg tracking-widest select-none">
+        <button
+          type="button"
+          id="frames-prev-btn"
+          aria-label="Previous photo frame"
+          class="px-3 py-1 hover: scale-110 active:scale-95 transition"
+        >
+          &lt;&lt;&lt;
+        </button>
+        <button
+          type="button"
+          id="frames-next-btn"
+          aria-label="Next photo frame"
+          class="px-3 py-1 hover:scale-110 active:scale-95 transition"
+        >
+          &gt;&gt;&gt;
+        </button>
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================================
+         SECTION 5: CEREMONIES — 6 MUGHAL CUSPED ARCH CARDS (00:43 - 00:57)
+         =================================================================== -->
+    <section aria-label="Ceremonies" class="maroon-damask-bg pt-14 pb-16 relative overflow-hidden">
+
+      <!-- Top-Left & Top-Right Ornate Floral Arch Corners with Hanging Jhumkas (00:33, 00:43) -->
+      <img
+        src="https://www.itsbalcony.com/templates/royale/media/floral1.png"
+        alt=""
+        class="w-36 h-auto object-contain absolute -top-3 -left-3 opacity-90 pointer-events-none select-none"
+      />
+      <img
+        src="https://www.itsbalcony.com/templates/royale/media/floral1.png"
+        alt=""
+        class="w-36 h-auto object-contain absolute -top-3 -right-3 -scale-x-100 opacity-90 pointer-events-none select-none"
+      />
+
+      <!-- Section Heading -->
+      <h2 class="text-center text-[2.5rem] font-semibold text-[#e6b875] tracking-wide mb-8 relative z-10">
+        Ceremonies
+      </h2>
+
+      <!-- 6 Vertically Stacked Mughal Cusped Arch Cards -->
+      <div id="ceremonies-cards-list" class="space-y-8 relative z-10"></div>
+
+      <!-- Bottom Torn Cream Paper Edge Transition into Compliments Section (00:56) -->
+      <img
+        src="https://www.itsbalcony.com/templates/royale/media/section_divider.svg"
+        alt=""
+        class="w-full h-auto object-cover absolute -bottom-1 left-0 pointer-events-none"
+      />
+    </section>
+
+
+    <!-- ===================================================================
+         SECTION 6: COMPLIMENTS & A NOTE FROM US SCROLLS + 3 LOTUS ICONS (00:57 - 01:03)
+         =================================================================== -->
+    <section aria-label="Compliments and a note" class="cream-damask-bg pt-10 pb-12 relative">
+
+      <!-- SCROLL 3: WITH BEST COMPLIMENTS FROM -->
+      <article class="royal-scroll-article mb-12 js-unroll-scroll">
+        <!-- Full Lotus Tree Motif behind the scroll -->
+        <img
+          src="https://www.itsbalcony.com/templates/royale/media/floral2.webp"
+          alt=""
+          class="scroll-backdrop-lotus"
+        />
+
+        <!-- Fixed Top Roller -->
+        <div class="roller-assembly roller-top-fixed">
+          <img src="https://www.itsbalcony.com/templates/royale/media/knob-left%201.svg" alt="" class="roller-knob-left" />
+          <img src="https://www.itsbalcony.com/templates/royale/media/roll-top1.svg" alt="" class="roller-bar-center" />
+          <img src="https://www.itsbalcony.com/templates/royale/media/knob%203.svg" alt="" class="roller-knob-right" />
+        </div>
+
+        <!-- Fixed-Height Maroon Sheet Clipped via --unroll -->
+        <div class="scroll-sheet-layer">
+          <div class="scroll-inner-frame">
+            <h2 class="text-[1.75rem] font-semibold text-[#f3c786] leading-snug mb-5">
+              With Best<br />Compliments From:
+            </h2>
+
+            <div class="space-y-3.5 text-[1.2rem] font-semibold text-[#fae6c8] leading-snug mb-6">
+              <p>Shri Suresh Sharma &amp; Family<br />(Chacha-Chachi)</p>
+              <p>Shri Manoj Sharma &amp; Family<br />(Tau-Tai)</p>
+              <p>Smt. Asha Gupta &amp; Family (Bua)</p>
+              <p>Shri Rajendra Mehta &amp; Family<br />(Mama-Mami)</p>
+            </div>
+
+            <div class="flex justify-center mt-2">
+              <img src="https://www.itsbalcony.com/templates/royale/media/divider.webp" alt="" class="w-56 h-auto object-contain" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Roller Translating Downward with --unroll -->
+        <div class="roller-assembly roller-bottom-follower">
+          <img src="https://www.itsbalcony.com/templates/royale/media/knob-left%201.svg" alt="" class="roller-knob-left" />
+          <img src="https://www.itsbalcony.com/templates/royale/media/roll-top1.svg" alt="" class="roller-bar-center" />
+          <img src="https://www.itsbalcony.com/templates/royale/media/knob%203.svg" alt="" class="roller-knob-right" />
+        </div>
+      </article>
+
+
+      <!-- SCROLL 4: A NOTE FROM US -->
+      <article class="royal-scroll-article mb-12 js-unroll-scroll">
+        <!-- Full Lotus Tree Motif behind the scroll -->
+        <img
+          src="https://www.itsbalcony.com/templates/royale/media/floral2.webp"
+          alt=""
+          class="scroll-backdrop-lotus"
+        />
+
+        <!-- Fixed Top Roller -->
+        <div class="roller-assembly roller-top-fixed">
+          <img src="https://www.itsbalcony.com/templates/royale/media/knob-left%201.svg" alt="" class="roller-knob-left" />
+          <img src="https://www.itsbalcony.com/templates/royale/media/roll-top1.svg" alt="" class="roller-bar-center" />
+          <img src="https://www.itsbalcony.com/templates/royale/media/knob%203.svg" alt="" class="roller-knob-right" />
+        </div>
+
+        <!-- Fixed-Height Maroon Sheet Clipped via --unroll -->
+        <div class="scroll-sheet-layer">
+          <div class="scroll-inner-frame">
+            <h2 class="text-[1.8rem] font-semibold text-[#f3c786] leading-snug mb-5">
+              A Note From Us
+            </h2>
+
+            <p class="text-[1.22rem] font-semibold text-[#fae6c8] leading-relaxed mb-6 px-2">
+              We can’t wait to celebrate this<br />
+              special day with you. Thank you<br />
+              for being part of our journey.
+            </p>
+
+            <div class="flex justify-center mt-2">
+              <img src="https://www.itsbalcony.com/templates/royale/media/divider.webp" alt="" class="w-56 h-auto object-contain" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Roller Translating Downward with --unroll -->
+        <div class="roller-assembly roller-bottom-follower">
+          <img src="https://www.itsbalcony.com/templates/royale/media/knob-left%201.svg" alt="" class="roller-knob-left" />
+          <img src="https://www.itsbalcony.com/templates/royale/media/roll-top1.svg" alt="" class="roller-bar-center" />
+          <img src="https://www.itsbalcony.com/templates/royale/media/knob%203.svg" alt="" class="roller-knob-right" />
+        </div>
+      </article>
+
+
+      <!-- 3 Maroon Lotus Utility Icons (Instagram, Map Pin, Calendar — Exact match to 01:02) -->
+      <div class="flex items-center justify-center gap-10 py-4 reveal-on-scroll">
+        <!-- 1. Instagram with Lotus Wreath -->
+        <a
+          href="https://www.instagram.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Follow on Instagram"
+          class="text-[#5e112b] hover:scale-110 transition"
+        >
+          <svg class="w-16 h-16" viewBox="0 0 80 80" fill="none">
+            <rect x="24" y="18" width="32" height="32" rx="8" stroke="#5e112b" stroke-width="3.5" />
+            <circle cx="40" cy="34" r="7" stroke="#5e112b" stroke-width="3.2" />
+            <circle cx="48.5" cy="25.5" r="2" fill="#5e112b" />
+            <!-- Decorative Lotus & Leaves at Bottom-Left -->
+            <path d="M18 52 C24 44, 34 46, 36 54 C28 56, 20 56, 18 52 Z" fill="#5e112b" />
+            <path d="M26 58 C34 52, 46 54, 52 60 C42 62, 32 62, 26 58 Z" fill="#5e112b" opacity="0.85" />
+            <circle cx="56" cy="14" r="1.5" fill="#c89648" />
+            <circle cx="16" cy="28" r="1.5" fill="#c89648" />
+          </svg>
+        </a>
+
+        <!-- 2. Location Pin with Lotus Wreath -->
+        <a
+          href="https://www.google.com/maps/search/?api=1&query=Sharma+Residence+Jaipur"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Open Venue Map"
+          class="text-[#5e112b] hover:scale-110 transition"
+        >
+          <svg class="w-16 h-16" viewBox="0 0 80 80" fill="none">
+            <path d="M40 14 C30 14, 22 22, 22 32 C22 45, 40 58, 40 58 C40 58, 58 45, 58 32 C58 22, 50 14, 40 14 Z" stroke="#5e112b" stroke-width="3.5" />
+            <circle cx="40" cy="31" r="6" fill="#5e112b" />
+            <path d="M22 54 C30 48, 50 48, 58 54 C48 62, 32 62, 22 54 Z" fill="#5e112b" />
+          </svg>
+        </a>
+
+        <!-- 3. Calendar with Lotus Wreath -->
+        <button
+          type="button"
+          onclick="downloadWeddingICS()"
+          aria-label="Save to Calendar"
+          class="text-[#5e112b] hover:scale-110 transition bg-transparent border-0 cursor-pointer"
+        >
+          <svg class="w-16 h-16" viewBox="0 0 80 80" fill="none">
+            <rect x="24" y="20" width="34" height="32" rx="5" stroke="#5e112b" stroke-width="3.5" />
+            <line x1="24" y1="30" x2="58" y2="30" stroke="#5e112b" stroke-width="3" />
+            <line x1="33" y1="15" x2="33" y2="23" stroke="#5e112b" stroke-width="3.5" stroke-linecap="round" />
+            <line x1="49" y1="15" x2="49" y2="23" stroke="#5e112b" stroke-width="3.5" stroke-linecap="round" />
+            <rect x="31" y="35" width="5" height="5" fill="#5e112b" />
+            <rect x="39" y="35" width="5" height="5" fill="#5e112b" />
+            <rect x="47" y="35" width="5" height="5" fill="#5e112b" />
+            <path d="M18 52 C26 45, 38 48, 42 56 C32 59, 22 58, 18 52 Z" fill="#5e112b" />
+          </svg>
+        </button>
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================================
+         SECTION 7: SUNSET GARDEN ROYAL EASEL ("Your Presence Means the World to Us") (01:03 - 01:06)
+         =================================================================== -->
+    <section aria-label="Closing message" class="relative w-full overflow-hidden reveal-on-scroll">
+      <div class="relative w-full">
+        <picture>
+          <source media="(min-width: 700px)" srcset="https://www.itsbalcony.com/templates/royale/media/garden_close.webp" />
+          <img
+            src="https://www.itsbalcony.com/templates/royale/media/garden_close_tall.webp"
+            alt="Royal Easel in Sunset Palace Garden"
+            class="w-full h-auto object-cover block"
+          />
+        </picture>
+
+        <!-- Centered Text Positioned Inside the Royal Easel Board (01:04) -->
+        <div class="absolute inset-x-0 top-[35%] flex items-center justify-center px-16 text-center pointer-events-none">
+          <p class="italic text-[#5e112b] text-[1.6rem] sm:text-[1.75rem] leading-[1.35] font-medium">
+            Your Presence<br />
+            Means the<br />
+            World to Us
+          </p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ===================================================================
+         SECTION 8: "YOUR PRESENCE MATTERS" RSVP CARD & FOOTER (01:06 - 01:13)
+         =================================================================== -->
+    <section aria-label="RSVP" class="cream-damask-bg px-3.5 pb-14 -mt-8 relative z-20 reveal-on-scroll">
+      <div class="bg-[#fdfbf9] rounded-[28px] shadow-[0_12px_40px_rgba(67,8,31,0.12)] border border-[#ede3d5] px-5 py-8 font-ui text-[#3a3042]">
+
+        <!-- Top Heading with Wavy Flourish Lines -->
+        <div class="flex items-center justify-center gap-3 mb-2">
+          <svg class="w-10 h-3 text-[#b5a8c4]" viewBox="0 0 50 12" fill="none">
+            <path d="M2 6 Q12 1, 25 6 T48 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <h2 class="font-serif text-[1.65rem] font-semibold text-[#3f324c] text-center leading-tight">
+            Your Presence<br />Matters
+          </h2>
+          <svg class="w-10 h-3 text-[#b5a8c4]" viewBox="0 0 50 12" fill="none">
+            <path d="M2 6 Q12 11, 25 6 T48 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <p class="text-center text-[0.9rem] text-[#6d6378] leading-relaxed mb-3 px-2">
+          Let us know so we can make the<br />arrangements just right.
+        </p>
+
+        <!-- Small Lavender Heart Divider -->
+        <div class="flex items-center justify-center gap-2 mb-6">
+          <span class="h-px w-12 bg-[#e6dfed]"></span>
+          <span class="text-[#c5b6d6] text-xs">♥</span>
+          <span class="h-px w-12 bg-[#e6dfed]"></span>
+        </div>
+
+        <form id="aeccentric-rsvp-form" class="space-y-4">
+          <!-- Row 1: Your Name -->
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-[#f0eaf7] text-[#7c6992] flex items-center justify-center shrink-0">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              </svg>
+            </div>
+            <input
+              type="text"
+              id="rsvp-guest-name"
+              required
+              placeholder="Your name"
+              class="w-full h-12 px-4 rounded-xl border border-[#dfd8e8] bg-white text-sm text-[#3a3042] placeholder-[#9b91a6] focus:outline-none focus:border-[#7c6992]"
+            />
+          </div>
+
+          <!-- Row 2: 10-digit mobile number -->
+          <div>
+            <div class="flex items-center gap-3">
+              <div class="w-11 h-11 rounded-full bg-[#f0eaf7] text-[#7c6992] flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                </svg>
+              </div>
+              <input
+                type="tel"
+                id="rsvp-guest-phone"
+                pattern="[0-9]{10}"
+                placeholder="10-digit mobile number"
+                class="w-full h-12 px-4 rounded-xl border border-[#dfd8e8] bg-white text-sm text-[#3a3042] placeholder-[#9b91a6] focus:outline-none focus:border-[#7c6992]"
+              />
+            </div>
+            <p class="text-[0.76rem] text-[#7f748a] mt-2 pl-1">
+              Reply again from this number any time to update your answer.
+            </p>
+          </div>
+
+          <!-- Box 3: How many of you are coming? Stepper -->
+          <div class="rounded-2xl border border-[#eae4f2] bg-[#faf8fc] p-4 text-center my-2">
+            <p class="text-[0.92rem] font-semibold text-[#3a3042] mb-3">
+              How many of you are coming?
+            </p>
+            <div class="inline-flex items-center gap-2.5">
+              <button
+                type="button"
+                id="guest-minus-btn"
+                class="w-10 h-10 rounded-xl border border-[#dfd8e8] bg-white text-[#5d4e70] text-lg font-medium hover:bg-[#f3eef9] transition"
+              >
+                −
+              </button>
+              <span
+                id="guest-count-display"
+                class="w-14 h-10 rounded-xl border border-[#dfd8e8] bg-white flex items-center justify-center font-semibold text-base text-[#2e2438]"
+              >
+                1
+              </span>
+              <button
+                type="button"
+                id="guest-plus-btn"
+                class="w-10 h-10 rounded-xl border border-[#dfd8e8] bg-white text-[#5d4e70] text-lg font-medium hover:bg-[#f3eef9] transition"
+              >
+                +
+              </button>
+            </div>
+            <p class="text-[0.75rem] text-[#7f748a] mt-3 leading-relaxed">
+              Counts for every event you say Yes or Maybe to, below. Up to 10 people.
+            </p>
+          </div>
+
+          <!-- Event Schedule Header -->
+          <div class="flex items-center gap-3 pt-2">
+            <div class="w-11 h-11 rounded-full bg-[#f0eaf7] text-[#7c6992] flex items-center justify-center shrink-0">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-[0.95rem] font-semibold text-[#3a3042]">Event Schedule</h3>
+              <p class="text-[0.78rem] text-[#7f748a]">Let us know which events you'll be joining.</p>
+            </div>
+          </div>
+
+          <!-- Event Selection Card (Mehendi, Sangeet, Wedding) -->
+          <div class="rounded-2xl border border-[#eae4f2] bg-[#faf8fc] p-4 space-y-4">
+            <!-- Mehendi -->
+            <div>
+              <p class="text-[0.92rem] font-semibold text-[#3a3042] mb-2">Mehendi</p>
+              <div class="grid grid-cols-3 gap-2">
+                <label class="rsvp-choice-label">
+                  <input type="radio" name="evt_mehendi" value="Yes" checked />
+                  <span>Yes</span>
+                </label>
+                <label class="rsvp-choice-label">
+                  <input type="radio" name="evt_mehendi" value="Maybe" />
+                  <span>Maybe</span>
+                </label>
+                <label class="rsvp-choice-label">
+                  <input type="radio" name="evt_mehendi" value="No" />
+                  <span>No</span>
+                </label>
+              </div>
+            </div>
+
+            <hr class="border-[#eae4f2]" />
+
+            <!-- Sangeet -->
+            <div>
+              <p class="text-[0.92rem] font-semibold text-[#3a3042] mb-2">Sangeet</p>
+              <div class="grid grid-cols-3 gap-2">
+                <label class="rsvp-choice-label">
+                  <input type="radio" name="evt_sangeet" value="Yes" checked />
+                  <span>Yes</span>
+                </label>
+                <label class="rsvp-choice-label">
+                  <input type="radio" name="evt_sangeet" value="Maybe" />
+                  <span>Maybe</span>
+                </label>
+                <label class="rsvp-choice-label">
+                  <input type="radio" name="evt_sangeet" value="No" />
+                  <span>No</span>
+                </label>
+              </div>
+            </div>
+
+            <hr class="border-[#eae4f2]" />
+
+            <!-- Wedding -->
+            <div>
+              <p class="text-[0.92rem] font-semibold text-[#3a3042] mb-2">Wedding</p>
+              <div class="grid grid-cols-3 gap-2">
+                <label class="rsvp-choice-label">
+                  <input type="radio" name="evt_wedding" value="Yes" checked />
+                  <span>Yes</span>
+                </label>
+                <label class="rsvp-choice-label">
+                  <input type="radio" name="evt_wedding" value="Maybe" />
+                  <span>Maybe</span>
+                </label>
+                <label class="rsvp-choice-label">
+                  <input type="radio" name="evt_wedding" value="No" />
+                  <span>No</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 4: Leave the couple a wish -->
+          <div class="flex items-start gap-3 pt-1">
+            <div class="w-11 h-11 rounded-full bg-[#f0eaf7] text-[#7c6992] flex items-center justify-center shrink-0 mt-1">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+            </div>
+            <textarea
+              id="rsvp-guest-wish"
+              rows="3"
+              placeholder="Leave the couple a wish (optional)"
+              class="w-full p-3.5 rounded-xl border border-[#dfd8e8] bg-white text-sm text-[#3a3042] placeholder-[#9b91a6] focus:outline-none focus:border-[#7c6992]"
+            ></textarea>
+          </div>
+
+          <!-- Submit Button: ♥ Send RSVP -->
+          <div class="pt-2">
+            <button
+              type="submit"
+              id="rsvp-submit-btn"
+              class="w-full py-3.5 rounded-full bg-[#7c6992] hover:bg-[#6b5880] text-white font-semibold text-[0.95rem] shadow-md flex items-center justify-center gap-2 transition"
+            >
+              <span>♥</span>
+              <span>Send RSVP</span>
+            </button>
+            <p class="text-center text-[0.76rem] text-[#8d8298] mt-3 leading-relaxed">
+              Preview - your guests will be able to send this<br />once your invitation is live.
+            </p>
+          </div>
+        </form>
+
+        <!-- Confirmation Toast inside Card -->
+        <div id="rsvp-thankyou-box" class="hidden mt-4 p-4 rounded-2xl bg-[#f3eef9] border border-[#d5c6e8] text-center">
+          <p class="font-semibold text-[#4d3b63] text-sm">
+            ♥ Thank you! Your RSVP has been saved for Ankita &amp; Kaushik’s wedding.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Footer Credits (01:11 - 01:13) -->
+      <footer class="text-center pt-10 pb-4 font-ui">
+        <p class="text-xs text-[#7d6b5d] mb-1">Crafted with love by</p>
+        <p class="font-serif text-2xl font-bold text-[#6b5b7b] tracking-tight">aeccentric</p>
+      </footer>
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================================
+       INTERACTIVE CONTROLLERS & PHYSICS SCRIPTS
+       ===================================================================== -->
+  <script>
+    // ---------------------------------------------------------------------
+    // 1. RENDER THE 6 MUGHAL CUSPED ARCH CEREMONY CARDS (00:43 - 00:57)
+    // ---------------------------------------------------------------------
+    const ceremoniesData = [
+      {
+        title: 'Ring Ceremony',
+        venue: 'Sharma Residence, Jaipur',
+        date: 'Tue, 1 Dec 2026',
+        time: '7:00 PM',
+        img: 'https://www.itsbalcony.com/templates/royale/media/ring_ceremony.webp'
+      },
+      {
+        title: 'Mehendi',
+        venue: 'Sharma Residence, Jaipur',
+        date: 'Wed, 2 Dec 2026',
+        time: '11:00 AM',
+        img: 'https://www.itsbalcony.com/templates/royale/media/mehendi.webp'
+      },
+      {
+        title: 'Haldi',
+        venue: 'Sharma Residence, Jaipur',
+        date: 'Wed, 2 Dec 2026',
+        time: '4:00 PM',
+        img: 'https://www.itsbalcony.com/templates/royale/media/haldi.webp'
+      },
+      {
+        title: 'Sangeet',
+        venue: 'Sharma Residence, Jaipur',
+        date: 'Wed, 2 Dec 2026',
+        time: '7:30 PM',
+        img: 'https://www.itsbalcony.com/templates/royale/media/sangeet.webp'
+      },
+      {
+        title: 'Vivaah',
+        venue: 'Sharma Residence, Jaipur',
+        date: 'Thu, 3 Dec 2026',
+        time: '8:00 PM',
+        img: 'https://www.itsbalcony.com/templates/royale/media/vivaah.webp'
+      },
+      {
+        title: 'Reception',
+        venue: 'Sharma Residence, Jaipur',
+        date: 'Fri, 4 Dec 2026',
+        time: '8:00 PM',
+        img: 'https://www.itsbalcony.com/templates/royale/media/reception.webp'
+      }
+    ];
+
+    function renderCeremonies() {
+      const container = document.getElementById('ceremonies-cards-list');
+      container.innerHTML = ceremoniesData.map((item, idx) => `
+        <div class="reveal-on-scroll">
+          <!-- Mughal Cusped Arch Card -->
+          <article class="mughal-arch-card">
+            <div class="relative w-full">
+              <!-- SVG Multi-Foil Mughal Cusped Arch Background & Double Gold Border -->
+              <svg viewBox="0 0 380 515" class="w-full h-auto block" preserveAspectRatio="none">
+                <!-- Outer Gold Border Arch -->
+                <path
+                  d="M 190 6
+                     C 212 28, 242 32, 255 56
+                     C 282 54, 308 74, 312 102
+                     C 342 106, 366 132, 366 165
+                     L 366 492
+                     Q 366 508, 350 508
+                     L 30 508
+                     Q 14 508, 14 492
+                     L 14 165
+                     C 14 132, 38 106, 68 102
+                     C 72 74, 98 54, 125 56
+                     C 138 32, 168 28, 190 6 Z"
+                  fill="#f7e5ce"
+                  stroke="#c89648"
+                  stroke-width="5"
+                />
+                <!-- Inner Fine Gold Arch Line -->
+                <path
+                  d="M 190 15
+                     C 210 35, 238 39, 250 62
+                     C 275 60, 299 78, 303 105
+                     C 331 109, 356 134, 356 165
+                     L 356 488
+                     Q 356 498, 346 498
+                     L 34 498
+                     Q 24 498, 24 488
+                     L 24 165
+                     C 24 134, 49 109, 77 105
+                     C 81 78, 105 60, 130 62
+                     C 142 39, 170 35, 190 15 Z"
+                  fill="none"
+                  stroke="#d5a458"
+                  stroke-width="1.2"
+                />
+              </svg>
+
+              <!-- Card Content Overlay inside the Arch -->
+              <div class="absolute inset-0 pt-14 pb-6 px-8 flex flex-col justify-between text-[#5a0d27]">
+                <!-- Top Ceremony Illustration -->
+                <div class="flex flex-col items-center">
+                  <img
+                    src="${item.img}"
+                    alt="${item.title}"
+                    loading="lazy"
+                    class="w-56 h-48 object-contain mx-auto select-none"
+                  />
+                  <h3 class="text-[2.15rem] font-bold text-[#5a0d27] text-center mt-1 leading-tight">
+                    ${item.title}
+                  </h3>
+                </div>
+
+                <!-- Venue + Map Button Row -->
+                <div>
+                  <div class="flex items-center justify-between gap-3 pb-3.5 border-b border-[#d7b790]">
+                    <p class="text-[1.25rem] font-semibold leading-snug text-[#4e0b22]">
+                      Sharma Residence,<br />Jaipur
+                    </p>
+                    <a
+                      href="https://www.google.com/maps/search/?api=1&query=Sharma+Residence+Jaipur"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Map location for ${item.title}"
+                      class="w-12 h-12 rounded-xl border border-[#84354c] bg-[#f9ecda] flex items-center justify-center shrink-0 hover:scale-105 transition"
+                    >
+                      <img
+                        src="https://www.itsbalcony.com/templates/royale/media/location.svg"
+                        alt="Location"
+                        class="w-6 h-6 object-contain"
+                      />
+                    </a>
+                  </div>
+
+                  <!-- Date & Time Row -->
+                  <div class="flex items-center justify-between pt-3 text-[#4e0b22]">
+                    <span class="text-[1.2rem] font-semibold">${item.date}</span>
+                    <span class="text-[1.05rem] font-semibold">${item.time}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Gold Floral Divider Between Ceremony Cards -->
+          ${idx < ceremoniesData.length - 1 ? `
+            <div class="flex justify-center mt-8 reveal-on-scroll">
+              <img
+                src="https://www.itsbalcony.com/templates/royale/media/divider2.png"
+                alt=""
+                class="w-72 h-auto object-contain"
+              />
+            </div>
+          ` : ''}
+        </div>
+      `).join('');
+    }
+
+
+    // ---------------------------------------------------------------------
+    // 2. SYNTHESIZED ROYAL INDIAN INSTRUMENTAL AUDIO + TWO-STAGE GATE OPENING
+    // ---------------------------------------------------------------------
+    let sitarSynth = null;
+    let chimeSynth = null;
+    let musicLoop = null;
+    let musicPlaying = false;
+    let gateOpened = false;
+    let lastScheduledSitarTime = 0;
+
+    const gateOverlay = document.getElementById('gate-overlay');
+    const tapToOpenBtn = document.getElementById('tap-to-open-btn');
+    const heroCoupleTitle = document.getElementById('hero-couple-title');
+    const speakerBtn = document.getElementById('floating-speaker-btn');
+    const speakerOnSvg = document.getElementById('speaker-on-svg');
+    const speakerOffSvg = document.getElementById('speaker-off-svg');
+
+    function safeTriggerSitar(note, requestedTime) {
+      if (!sitarSynth) return;
+      try {
+        const now = Tone.now();
+        // Guarantee strictly increasing time for monophonic PluckSynth
+        const safeTime = Math.max(requestedTime || now, now, lastScheduledSitarTime + 0.05);
+        lastScheduledSitarTime = safeTime;
+        sitarSynth.triggerAttack(note, safeTime);
+      } catch (err) {
+        // Ignore transient WebAudio scheduling race conditions
+      }
+    }
+
+    async function startWeddingMusic() {
+      try {
+        await Tone.start();
+        if (!sitarSynth) {
+          const reverb = new Tone.Reverb({ decay: 4.5, wet: 0.45 }).toDestination();
+          sitarSynth = new Tone.PluckSynth({
+            attackNoise: 1.2,
+            dampening: 3200,
+            resonance: 0.96
+          }).connect(reverb);
+
+          chimeSynth = new Tone.PolySynth(Tone.Synth, {
+            oscillator: { type: 'triangle' },
+            envelope: { attack: 0.02, decay: 0.8, sustain: 0.1, release: 1.4 },
+            volume: -10
+          }).connect(reverb);
+
+          // Gentle Raag Yaman auspicious notes
+          const melody = ['D4', 'F#4', 'A4', 'B4', 'A4', 'F#4', 'E4', 'D4'];
+          let noteIdx = 0;
+          musicLoop = new Tone.Loop((time) => {
+            safeTriggerSitar(melody[noteIdx % melody.length], time);
+            noteIdx++;
+          }, '2n').start(0);
+        }
+        if (Tone.Transport.state !== 'started') {
+          Tone.Transport.start('+0.05');
+        }
+        musicPlaying = true;
+        speakerOnSvg.classList.remove('hidden');
+        speakerOffSvg.classList.add('hidden');
+      } catch (e) {
+        // Fallback if browser blocks audio
+      }
+    }
+
+    function toggleWeddingMusic() {
+      if (!sitarSynth) {
+        startWeddingMusic();
+        return;
+      }
+      if (musicPlaying) {
+        Tone.Transport.pause();
+        musicPlaying = false;
+        speakerOnSvg.classList.add('hidden');
+        speakerOffSvg.classList.remove('hidden');
+      } else {
+        Tone.Transport.start('+0.05');
+        musicPlaying = true;
+        speakerOnSvg.classList.remove('hidden');
+        speakerOffSvg.classList.add('hidden');
+      }
+    }
+
+    speakerBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleWeddingMusic();
+    });
+
+    function openRoyalGate() {
+      if (gateOpened) return;
+      gateOpened = true;
+
+      // Start auspicious background sitar/santoor chime
+      startWeddingMusic();
+
+      // STAGE 1 (00:03.5 -> 00:04.0): Collapse the center cream parchment band first
+      gateOverlay.classList.add('band-collapsing');
+
+      // STAGE 2 (00:04.0 -> 00:05.1): Slide the left and right maroon doors apart
+      setTimeout(() => {
+        gateOverlay.classList.add('doors-sliding');
+        document.body.classList.remove('gate-locked');
+      }, 360);
+
+      // STAGE 3 (00:05.5 -> 00:06.2): Reveal "Ankita & Kaushik" in the sky
+      setTimeout(() => {
+        heroCoupleTitle.classList.add('visible');
+      }, 850);
+
+      // Remove gate overlay pointer capture after doors finish sliding
+      setTimeout(() => {
+        gateOverlay.classList.add('gate-hidden');
+      }, 1450);
+    }
+
+    gateOverlay.addEventListener('click', openRoyalGate);
+    tapToOpenBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openRoyalGate();
+    });
+
+
+    // ---------------------------------------------------------------------
+    // 3. FIXED-HEIGHT 60FPS LERP ROYAL SCROLL UNROLLING ENGINE
+    //    (Zero layout shift: measures each scroll sheet once, sets --sheet-h,
+    //     and smoothly interpolates --unroll from 0 -> 1 so the bottom roller
+    //     tracks the exact clip-path edge while covering floral2.webp behind it)
+    // ---------------------------------------------------------------------
+    const scrollStates = [];
+
+    function initRoyalScrollArticles() {
+      const articles = document.querySelectorAll('.js-unroll-scroll');
+      scrollStates.length = 0;
+
+      articles.forEach((article) => {
+        const sheet = article.querySelector('.scroll-sheet-layer');
+        const h = sheet ? sheet.offsetHeight : 360;
+        article.style.setProperty('--sheet-h', `${h}px`);
+        scrollStates.push({
+          article,
+          sheet,
+          current: 0,
+          target: 0
+        });
+      });
+    }
+
+    function measureScrollTargets() {
+      const vh = window.innerHeight;
+      scrollStates.forEach((st) => {
+        const sheet = st.sheet;
+        if (sheet) {
+          st.article.style.setProperty('--sheet-h', `${sheet.offsetHeight}px`);
+        }
+        const rect = st.article.getBoundingClientRect();
+
+        // Begin unrolling when top of the scroll article crosses 82% of viewport height;
+        // reach 100% unrolled when top reaches 28% of viewport height (matches 00:13.5 - 00:15.5)
+        const startY = vh * 0.82;
+        const endY = vh * 0.28;
+
+        let raw = (startY - rect.top) / (startY - endY);
+        raw = Math.max(0, Math.min(1, raw));
+        st.target = raw;
+      });
+    }
+
+    function tickRoyalScrollPhysics() {
+      measureScrollTargets();
+      for (const st of scrollStates) {
+        // 60fps smooth spring-lerp interpolation
+        const diff = st.target - st.current;
+        if (Math.abs(diff) > 0.0005) {
+          st.current += diff * 0.14;
+        } else {
+          st.current = st.target;
+        }
+        st.article.style.setProperty('--unroll', st.current.toFixed(4));
+      }
+      requestAnimationFrame(tickRoyalScrollPhysics);
+    }
+
+    window.addEventListener('resize', initRoyalScrollArticles);
+
+
+    // ---------------------------------------------------------------------
+    // 3B. INTERSECTION OBSERVER FOR SECTION & CARD SCROLL REVEALS
+    // ---------------------------------------------------------------------
+    function initScrollRevealObserver() {
+      const revealEls = document.querySelectorAll('.reveal-on-scroll, .reveal-left, .reveal-right');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+          }
+        });
+      }, {
+        threshold: 0.14,
+        rootMargin: '0px 0px -30px 0px'
+      });
+
+      revealEls.forEach((el) => observer.observe(el));
+    }
+
+
+    // ---------------------------------------------------------------------
+    // 4. INTERACTIVE "REVEAL THE DATE" SLOT REELS (00:22 - 00:28)
+    //    Spins plaques to 03 | DEC | 2026 and morphs button to "Save the Date"
+    // ---------------------------------------------------------------------
+    const revealDateBtn = document.getElementById('reveal-date-btn');
+    const saveDateLink = document.getElementById('save-date-link');
+    let dateRevealed = false;
+
+    function spinDateReels() {
+      if (dateRevealed) return;
+      dateRevealed = true;
+
+      const cellHeight = 64;
+      const finalIndex = 5; // 6th cell: 03 | DEC | 2026
+      const offsetPx = finalIndex * cellHeight;
+
+      document.getElementById('slot-reel-date').style.transform = `translate3d(0, -${offsetPx}px, 0)`;
+      document.getElementById('slot-reel-month').style.transform = `translate3d(0, -${offsetPx}px, 0)`;
+      document.getElementById('slot-reel-year').style.transform = `translate3d(0, -${offsetPx}px, 0)`;
+
+      // Play a subtle auspicious chime on the dedicated PolySynth so it never collides with the background Loop
+      if (chimeSynth && musicPlaying) {
+        try {
+          const now = Tone.now() + 0.05;
+          ['D4', 'F#4', 'A4', 'D5'].forEach((n, i) => {
+            chimeSynth.triggerAttackRelease(n, '8n', now + i * 0.14);
+          });
+        } catch (err) {}
+      }
+
+      // Fade out "Reveal the Date" as reels spin and show "Save the Date" once settled
+      revealDateBtn.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+      revealDateBtn.style.opacity = '0';
+      revealDateBtn.style.transform = 'scale(0.92)';
+
+      setTimeout(() => {
+        revealDateBtn.classList.add('hidden');
+        saveDateLink.classList.remove('hidden');
+      }, 2400);
+    }
+
+    revealDateBtn.addEventListener('click', spinDateReels);
+
+
+    // ---------------------------------------------------------------------
+    // 5. HANGING PICTURE FRAMES CAROUSEL + PENDULUM SWING PHYSICS (00:29 - 00:42)
+    // ---------------------------------------------------------------------
+    const framesTrack = document.getElementById('hanging-frames-track');
+    const frameSlides = document.querySelectorAll('.hanging-frame-slide');
+    const prevFrameBtn = document.getElementById('frames-prev-btn');
+    const nextFrameBtn = document.getElementById('frames-next-btn');
+
+    let lastScrollLeft = 0;
+    let swingTimeout = null;
+
+    framesTrack.addEventListener('scroll', () => {
+      const delta = framesTrack.scrollLeft - lastScrollLeft;
+      lastScrollLeft = framesTrack.scrollLeft;
+
+      // Clamp swing angle based on horizontal swipe velocity (matches 00:38 - 00:41)
+      const angle = Math.max(-9, Math.min(9, delta * 0.28));
+      frameSlides.forEach((slide) => {
+        slide.style.transform = `rotate(${angle}deg)`;
+      });
+
+      clearTimeout(swingTimeout);
+      swingTimeout = setTimeout(() => {
+        frameSlides.forEach((slide) => {
+          slide.style.transform = 'rotate(0deg)';
+        });
+      }, 180);
+    }, { passive: true });
+
+    prevFrameBtn.addEventListener('click', () => {
+      framesTrack.scrollBy({ left: -framesTrack.clientWidth * 0.85, behavior: 'smooth' });
+    });
+
+    nextFrameBtn.addEventListener('click', () => {
+      framesTrack.scrollBy({ left: framesTrack.clientWidth * 0.85, behavior: 'smooth' });
+    });
+
+    // Optional Photo Upload when clicking "Your photo here"
+    let selectedFrameIdx = 0;
+    const fileInput = document.getElementById('hidden-frame-file-input');
+
+    function triggerFramePhotoUpload(idx) {
+      selectedFrameIdx = idx;
+      fileInput.click();
+    }
+
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const imgEl = document.getElementById(`frame-uploaded-${selectedFrameIdx}`);
+        const placeholderEl = document.getElementById(`frame-placeholder-${selectedFrameIdx}`);
+        if (imgEl && placeholderEl) {
+          imgEl.src = ev.target.result;
+          imgEl.classList.remove('hidden');
+          placeholderEl.classList.add('hidden');
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+
+
+    // ---------------------------------------------------------------------
+    // 6. HERO REFLECTION POOL FLOATING DIYA SHIMMER CANVAS
+    // ---------------------------------------------------------------------
+    const shimmerCanvas = document.getElementById('water-shimmer-canvas');
+    const sCtx = shimmerCanvas.getContext('2d');
+    let glints = [];
+
+    function initWaterGlints() {
+      shimmerCanvas.width = shimmerCanvas.parentElement.clientWidth;
+      shimmerCanvas.height = shimmerCanvas.parentElement.clientHeight;
+      glints = [];
+      for (let i = 0; i < 28; i++) {
+        glints.push({
+          x: shimmerCanvas.width * (0.28 + Math.random() * 0.44),
+          y: shimmerCanvas.height * (0.62 + Math.random() * 0.34),
+          r: Math.random() * 2.2 + 0.8,
+          phase: Math.random() * Math.PI * 2,
+          speed: 0.03 + Math.random() * 0.03
+        });
+      }
+    }
+
+    function animateWaterGlints() {
+      sCtx.clearRect(0, 0, shimmerCanvas.width, shimmerCanvas.height);
+      for (const g of glints) {
+        g.phase += g.speed;
+        const alpha = 0.25 + (Math.sin(g.phase) + 1) * 0.32;
+        sCtx.beginPath();
+        sCtx.fillStyle = `rgba(255, 232, 168, ${alpha})`;
+        sCtx.arc(g.x, g.y, g.r, 0, Math.PI * 2);
+        sCtx.fill();
+      }
+      requestAnimationFrame(animateWaterGlints);
+    }
+
+
+    // ---------------------------------------------------------------------
+    // 7. "YOUR PRESENCE MATTERS" RSVP STEPPER & FORM CONTROLLER (01:06 - 01:13)
+    // ---------------------------------------------------------------------
+    let guestCount = 1;
+    const guestCountDisplay = document.getElementById('guest-count-display');
+
+    document.getElementById('guest-minus-btn').addEventListener('click', () => {
+      if (guestCount > 1) {
+        guestCount--;
+        guestCountDisplay.textContent = guestCount;
+      }
+    });
+
+    document.getElementById('guest-plus-btn').addEventListener('click', () => {
+      if (guestCount < 10) {
+        guestCount++;
+        guestCountDisplay.textContent = guestCount;
+      }
+    });
+
+    document.getElementById('aeccentric-rsvp-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const rsvpPayload = {
+        name: document.getElementById('rsvp-guest-name').value,
+        phone: document.getElementById('rsvp-guest-phone').value,
+        guests: guestCount,
+        wish: document.getElementById('rsvp-guest-wish').value,
+        savedAt: new Date().toISOString()
+      };
+      try {
+        localStorage.setItem('royale_rsvp_submission', JSON.stringify(rsvpPayload));
+      } catch (err) {}
+      document.getElementById('rsvp-thankyou-box').classList.remove('hidden');
+      document.getElementById('rsvp-submit-btn').textContent = '✓ RSVP Saved';
+    });
+
+
+    // ---------------------------------------------------------------------
+    // 8. CALENDAR (.ICS) DOWNLOAD & PREVIEW CHROME CONTROLLERS
+    // ---------------------------------------------------------------------
+    function downloadWeddingICS() {
+      const icsLines = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//aeccentric//Royale Wedding Invitation//EN',
+        'BEGIN:VEVENT',
+        'DTSTART:20261203T143000Z',
+        'DTEND:20261204T013000Z',
+        'SUMMARY:Ankita & Kaushik Wedding (Vivaah)',
+        'DESCRIPTION:We cordially invite you to grace the auspicious occasion of the marriage of Ankita & Kaushik.',
+        'LOCATION:Sharma Residence, Jaipur',
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ].join('\r\n');
+
+      const blob = new Blob([icsLines], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Ankita-Kaushik-Wedding.ics';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // Eye button: Hide/Show preview UI chrome (`← Back`, `✎ Try editing`, `Buy this template`)
+    document.getElementById('chrome-eye-btn').addEventListener('click', () => {
+      document.body.classList.toggle('chrome-hidden');
+    });
+
+    // `← Back` button: Re-locks and replays the two-stage Gate Overlay animation
+    document.getElementById('chrome-back-btn').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      gateOpened = false;
+      gateOverlay.classList.remove('gate-hidden', 'doors-sliding', 'band-collapsing');
+      heroCoupleTitle.classList.remove('visible');
+      document.body.classList.add('gate-locked');
+    });
+
+    // `✎ Try editing` button: Makes invitation text blocks live-editable on the page
+    let isLiveEditing = false;
+    const tryEditingBtn = document.getElementById('try-editing-btn');
+    const tryEditingLabel = document.getElementById('try-editing-label');
+
+    tryEditingBtn.addEventListener('click', () => {
+      isLiveEditing = !isLiveEditing;
+      document.body.classList.toggle('live-edit-mode', isLiveEditing);
+      const editableNodes = document.querySelectorAll('h1, h2, h3, .scroll-inner-frame p, .hanging-frame-slide p');
+      editableNodes.forEach((node) => {
+        node.setAttribute('contenteditable', isLiveEditing ? 'true' : 'false');
+      });
+      tryEditingLabel.textContent = isLiveEditing ? 'Done editing' : 'Try editing';
+    });
+
+    // `Buy this template` button: Triggers live-edit/customization mode or scrolls to RSVP
+    document.getElementById('buy-template-btn').addEventListener('click', () => {
+      tryEditingBtn.click();
+    });
+
+
+    // ---------------------------------------------------------------------
+    // INITIALIZE ON LOAD
+    // ---------------------------------------------------------------------
+    window.onload = function () {
+      renderCeremonies();
+      initWaterGlints();
+      animateWaterGlints();
+      initRoyalScrollArticles();
+      tickRoyalScrollPhysics();
+      initScrollRevealObserver();
+    };
+  </script>
+</body>
+</html>
